@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../db/firestore')
+const errorHandler = require('../middleware/errorHandler')
+const Controller = require('../controller/Controller')
 
 // define the home page route
 router.get('/', async (req, res) => {
@@ -10,5 +11,9 @@ router.get('/', async (req, res) => {
         res.status(500).json({ msg: 'ISE' })
     }
 })
+
+router.post('/register', Controller.register)
+
+router.use(errorHandler)
 
 module.exports = router
