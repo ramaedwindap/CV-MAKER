@@ -1,0 +1,25 @@
+{
+  "name": "fsjs-p2-v2-iproject-server-ramaedwindap",
+  "version": "1.0.0",
+  "description": "[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11649428&assignment_repo_type=AssignmentRepo)\r # fsjs-p2-v2-iproject-server\r Individual Project - Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/H8-P2-S2/fsjs-p2-v2-iproject-server-ramaedwindap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/H8-P2-S2/fsjs-p2-v2-iproject-server-ramaedwindap/issues"
+  },
+  "homepage": "https://github.com/H8-P2-S2/fsjs-p2-v2-iproject-server-ramaedwindap#readme",
+  "dependencies": {
+    "@google-cloud/firestore": "^6.7.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.10.1"
+  }
+}
