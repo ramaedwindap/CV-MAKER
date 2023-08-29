@@ -1,6 +1,7 @@
 const { db, FieldValue } = require('../db/firestore');
-const { hashPassword, checkPassword } = require('../middleware/bcrypt');
-const { signToken } = require('../middleware/jwt');
+const { hashPassword, checkPassword } = require('../helper/bcrypt');
+const { isValidEmail, validMinLength } = require('../helper/helpers');
+const { signToken } = require('../helper/jwt');
 
 class Controller {
     static async register(req, res, next) {
@@ -8,6 +9,11 @@ class Controller {
             const { email, password } = req.body
             if (!email) throw { name: "emailRequired" }
             if (!password) throw { name: "passwordRequired" }
+
+            if (!isValidEmail(email)) throw { name: "invalidEmail" }
+
+            // console.log(validMinLength(password, 5))
+            if (validMinLength(password, 5)) throw { name: "passwordMin" }
 
             const User = db.collection('Users');
 
@@ -70,6 +76,77 @@ class Controller {
             next(error)
         }
     }
+
+    static async storeResume(req, res, next) {
+        try {
+            const { name,
+                phoneNumber,
+                email,
+                address,
+                description,
+                educationTitle,
+                educationDesc,
+                educationDateFrom,
+                educationDateTo,
+                educationAccomplishment,
+                skills,
+                jobTitle,
+                jobDesc,
+                jobDateFrom,
+                jobDateTo,
+                jobAccomplishment,
+            } = req.body
+
+            const { id: idUser } = req.user
+
+            // console.log(idUser, "idUser")
+
+            const Resume = db.collection("Resumes")
+
+            const foundResume = await Resume.where('userId', '==', idUser).get();
+
+            const data = {
+                identity: {
+                    name,
+                    phoneNumber,
+                    email,
+                    address,
+                    description,
+                },
+                education: {
+                    title: educationTitle,
+                    desc: educationDesc,
+                    dateFrom: educationDateFrom,
+                    dateTo: educationDateTo,
+                    accomplishment: educationAccomplishment
+                },
+                skills,
+                experince: {
+                    title: jobTitle,
+                    desc: jobDesc,
+                    dateFrom: jobDateFrom,
+                    dateTo: jobDateTo,
+                    accomplishment: jobAccomplishment,
+                },
+                userId: idUser,
+            }
+            // console.log(resumes.empty)
+            if (foundResume.empty) {
+                const addResume = await Resume.add(data)
+
+                res.status(201).json({ message: `Success add resume with id ${addResume.id}` })
+            } else {
+                const resumeId = foundResume.docs[0].id
+
+                await Resume.doc(resumeId).update(data)
+
+                res.status(200).json({ message: `Success update resume id ${resumeId}` })
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 module.exports = Controller

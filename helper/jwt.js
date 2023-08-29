@@ -3,7 +3,10 @@ const secreet = 'HHHSSSssshsh'
 
 function signToken(obj) {
     return jwt.sign(obj, secreet);
-
 }
 
-module.exports = { signToken }
+function verifyToken(token) {
+    return jwt.verify(token, secreet);
+}
+
+module.exports = { signToken, verifyToken }

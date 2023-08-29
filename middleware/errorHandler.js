@@ -11,8 +11,17 @@ function errorHandler(err, req, res, next) {
             return res.status(400).json({ message: "Email should unique!" })
         case "unAuthenticated":
             return res.status(401).json({ message: "Invalid email or password!" })
+        case "invalidEmail":
+            return res.status(400).json({ message: 'Invalid email format' });
+        case "passwordMin":
+            return res.status(400).json({ message: 'Password min 5' });
+        case "invalidToken":
+        case "JsonWebTokenError":
+            return res.status(401).json({ message: 'Invalid token' });
+
+
         default:
-            return res.status(500).json({ message: "Internal Server Error" })
+            return res.status(500).json({ message: "Internal server error" })
     }
 }
 
