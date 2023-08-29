@@ -14,6 +14,8 @@ router.get('/', async (req, res) => {
 
 router.post('/register', Controller.register)
 
+router.post('/login', Controller.login)
+
 router.use(errorHandler)
 
 module.exports = router
