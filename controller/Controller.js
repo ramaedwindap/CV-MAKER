@@ -9,16 +9,16 @@ class Controller {
             if (!email) throw { name: "emailRequired" }
             if (!password) throw { name: "passwordRequired" }
 
-            const user = db.collection('Users');
+            const User = db.collection('Users');
 
-            const foundEmail = await user.where('email', '==', email).get();
+            const foundEmail = await User.where('email', '==', email).get();
 
             if (!foundEmail.empty) throw { name: "uniqueEmail" }
 
             const passwordHashed = hashPassword(password)
             // console.log(foundEmail.empty)
 
-            const addUser = await user.add({
+            const addUser = await User.add({
                 email,
                 password: passwordHashed,
                 createdAt: FieldValue.serverTimestamp(),
@@ -37,32 +37,31 @@ class Controller {
             if (!email) throw { name: "emailRequired" }
             if (!password) throw { name: "passwordRequired" }
 
-            const users = db.collection('Users');
+            const User = db.collection('Users');
 
-            const foundUser = await users.where('email', '==', email).get();
+            const foundUser = await User.where('email', '==', email).get();
 
             // console.log(foundUser.empty)
             if (foundUser.empty) throw { name: "unAuthenticated" }
 
-            const user = foundUser.docs[0].data()
+            const userData = foundUser.docs[0].data()
             // console.log(foundUser.docs[0].data())//GET ONE DATA
-            let dbPasswordUser = user.password
+            let dbPasswordUser = userData.password
             // console.log(userData)
             const validPass = checkPassword(password, dbPasswordUser)
             // console.log(validPass)
             if (!validPass) throw { name: "unAuthenticated" }
 
-            delete user.password;
+            delete userData.password;
 
-            user.id = foundUser.docs[0].id //GET ID
+            userData.id = foundUser.docs[0].id //GET ID
             // console.log(foundUser.docs[0].id) // GET ID 
             // foundUser.forEach(doc => {
             //     userData = doc.data();
             // });
 
             // console.log(user)
-
-            const access_token = signToken(user)
+            const access_token = signToken(userData)
 
             // console.log(access_token)
 
