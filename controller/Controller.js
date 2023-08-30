@@ -249,9 +249,9 @@ class Controller {
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.8);
+                ).moveDown(0.4);
             })
-
+            doc.moveDown(0.4)
             // Professional Experiences
             doc.fontSize(13).font('font/Poppins-Medium.ttf').text(`Professional Experiences`,
                 // 40, 100,
@@ -291,8 +291,9 @@ class Controller {
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.8);
+                ).moveDown(0.4);
             })
+            doc.moveDown(0.4)
 
             // Skills
             doc.fontSize(11).font('font/Poppins-Medium.ttf').text(`Skills`,
@@ -315,6 +316,8 @@ class Controller {
                     },
                 ).moveDown(0.2);
             });
+            doc.moveDown(0.4)
+
 
 
 
