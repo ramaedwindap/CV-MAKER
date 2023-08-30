@@ -348,7 +348,7 @@ class Controller {
         } catch (error) {
             next(error)
         }
-    })
+    }
 
     static async getResume(req, res, next) {
         try {
@@ -366,7 +366,7 @@ class Controller {
         } catch (error) {
             next(error)
         }
-    })
+    }
 }
 
 module.exports = Controller
