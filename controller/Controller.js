@@ -6,7 +6,7 @@ const PDFDocument = require('pdfkit');
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
-    apiKey: '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', // defaults to process.env["OPENAI_API_KEY"]
+    apiKey: process.env.OPENAI_KEY, // defaults to process.env["OPENAI_API_KEY"]
 });
 
 class Controller {

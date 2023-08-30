@@ -1,8 +1,6 @@
 function errorHandler(err, req, res, next) {
     console.log(err, "ERRRRRRRRROOOOOR=======")
     const name = err.name
-    const status = err.status
-    const message = err.error.message
     // console.log(err.status, "-----")
 
     switch (name) {
@@ -21,13 +19,11 @@ function errorHandler(err, req, res, next) {
         case "invalidToken":
         case "JsonWebTokenError":
             return res.status(401).json({ message: 'Invalid token' });
-        case "BadRequestError":
-            return res.status(status).json({ message: 'Invalid token' });
 
 
 
         default:
-            return res.status(500).json({ message })
+            return res.status(500).json({ message: "Internal server error" })
     }
 }
 
