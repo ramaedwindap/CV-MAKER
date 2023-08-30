@@ -23,6 +23,8 @@ router.get('/generate-pdf/:resumeId', Controller.generatePdf)
 
 router.post('/resumes', authentication, Controller.storeResume)
 
+router.post('/chat-openAi', authentication, Controller.chatOpenAi)
+
 router.use(errorHandler)
 
 module.exports = router

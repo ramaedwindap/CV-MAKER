@@ -3,6 +3,11 @@ const { hashPassword, checkPassword } = require('../helper/bcrypt');
 const { isValidEmail, validMinLength } = require('../helper/helpers');
 const { signToken } = require('../helper/jwt');
 const PDFDocument = require('pdfkit');
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_KEY, // defaults to process.env["OPENAI_API_KEY"]
+});
 
 class Controller {
     static async register(req, res, next) {
@@ -242,16 +247,17 @@ class Controller {
 
             // Education Accomplishment
             const splitEduAccomplishment = data.education.accomplishment.split('\n')
-
+            // console.log(splitEduAccomplishment)
             splitEduAccomplishment.forEach(element => {
                 doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
                     // 40, 100,
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.4);
+                ).moveDown(0.2);
             })
-            doc.moveDown(0.4)
+            doc.moveDown(0.6);
+
             // Professional Experiences
             doc.fontSize(13).font('font/Poppins-Medium.ttf').text(`Professional Experiences`,
                 // 40, 100,
@@ -284,6 +290,7 @@ class Controller {
 
             // Professional Experiences Accomplishment
             const splitAccomplishment = data.experience.accomplishment.split('\n')
+            // console.log(splitAccomplishment, '<<<>>>')
 
             splitAccomplishment.forEach(element => {
                 doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
@@ -291,9 +298,9 @@ class Controller {
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.4);
+                ).moveDown(0.2);
             })
-            doc.moveDown(0.4)
+            doc.moveDown(0.6);
 
             // Skills
             doc.fontSize(11).font('font/Poppins-Medium.ttf').text(`Skills`,
@@ -319,11 +326,25 @@ class Controller {
             doc.moveDown(0.4)
 
 
-
-
-
             // Finalize the PDF
             doc.end();
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async chatOpenAi(req, res, next) {
+        try {
+            const { query } = req.body
+
+            // console.log(query, "==============")
+            const completion = await openai.chat.completions.create({
+                messages: [{ role: 'user', content: query }],
+                model: 'gpt-3.5-turbo',
+            });
+
+            res.status(201).json(completion.choices[0])
+            // console.log(completion.choices);
         } catch (error) {
             next(error)
         }

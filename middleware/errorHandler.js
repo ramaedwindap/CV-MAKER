@@ -1,6 +1,7 @@
 function errorHandler(err, req, res, next) {
     console.log(err, "ERRRRRRRRROOOOOR=======")
     const name = err.name
+    // console.log(err.status, "-----")
 
     switch (name) {
         case "emailRequired":
@@ -18,6 +19,7 @@ function errorHandler(err, req, res, next) {
         case "invalidToken":
         case "JsonWebTokenError":
             return res.status(401).json({ message: 'Invalid token' });
+
 
 
         default:
