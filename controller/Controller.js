@@ -66,7 +66,7 @@ class Controller {
 
             // console.log(access_token)
 
-            res.status(200).json({ access_token })
+            res.status(200).json({ access_token, email: user.email })
         } catch (error) {
             next(error)
         }
