@@ -17,9 +17,7 @@ router.post('/register', Controller.register)
 
 router.post('/login', Controller.login)
 
-// router.get('/resumes', Controller.getResume)
-
-// router.put('/resumes', Controller.updateResume)
+router.get('/resumes', authentication, Controller.getResume)
 
 router.post('/resumes', authentication, Controller.storeResume)
 

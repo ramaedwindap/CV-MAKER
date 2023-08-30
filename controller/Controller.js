@@ -147,6 +147,23 @@ class Controller {
         }
     }
 
+    static async getResume(req, res, next) {
+        try {
+            const { id: idUser } = req.user
+
+            // console.log(idUser, "idUser")
+
+            const Resume = db.collection("Resumes")
+
+            const foundResume = await Resume.where('userId', '==', idUser).get();
+
+            const data = foundResume.docs[0].data()
+
+            res.status(200).json(data)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = Controller
