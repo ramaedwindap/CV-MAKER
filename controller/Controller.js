@@ -242,15 +242,16 @@ class Controller {
 
             // Education Accomplishment
             const splitEduAccomplishment = data.education.accomplishment.split('\n')
-
+            // console.log(splitEduAccomplishment)
             splitEduAccomplishment.forEach(element => {
                 doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
                     // 40, 100,
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.8);
+                ).moveDown(0.2);
             })
+            doc.moveDown(0.6);
 
             // Professional Experiences
             doc.fontSize(13).font('font/Poppins-Medium.ttf').text(`Professional Experiences`,
@@ -284,15 +285,17 @@ class Controller {
 
             // Professional Experiences Accomplishment
             const splitAccomplishment = data.experience.accomplishment.split('\n')
+            // console.log(splitAccomplishment, '<<<>>>')
 
             splitAccomplishment.forEach(element => {
-                doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
+                doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`•I. ${element}`,
                     // 40, 100,
                     {
                         align: 'justify'
                     },
-                ).moveDown(0.8);
+                ).moveDown(0.2);
             })
+            doc.moveDown(0.6);
 
             // Skills
             doc.fontSize(11).font('font/Poppins-Medium.ttf').text(`Skills`,
