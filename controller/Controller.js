@@ -2,6 +2,7 @@ const { db, FieldValue } = require('../db/firestore');
 const { hashPassword, checkPassword } = require('../helper/bcrypt');
 const { isValidEmail, validMinLength } = require('../helper/helpers');
 const { signToken } = require('../helper/jwt');
+const PDFDocument = require('pdfkit');
 
 class Controller {
     static async register(req, res, next) {
@@ -121,7 +122,7 @@ class Controller {
                     accomplishment: educationAccomplishment
                 },
                 skills,
-                experince: {
+                experience: {
                     title: jobTitle,
                     desc: jobDesc,
                     dateFrom: jobDateFrom,
@@ -142,6 +143,184 @@ class Controller {
 
                 res.status(200).json({ message: `Success update resume id ${resumeId}` })
             }
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async generatePdf(req, res, next) {
+        try {
+            const { resumeId } = req.params
+
+            const Resume = db.collection("Resumes").doc(resumeId)
+
+            const docResume = await Resume.get();
+
+            // console.log(Resume.empty, "==========")
+            // const foundResume = await Resume.where('resumeId', '==', idUser).get();
+            // console.log(docResume.data())
+            const data = docResume.data()
+
+            const doc = new PDFDocument({ size: 'A4' });
+
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'inline; filename="example.pdf"');
+
+            doc.pipe(res);
+
+            // doc.font('font/Poppins-Regular.ttf')
+
+            // Name
+            doc.fontSize(16).font('font/Poppins-Medium.ttf').text(`${data.identity.name}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0);
+
+            // Address
+            doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`${data.identity.address}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.2);
+
+            // Description
+            doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`${data.identity.email}  |  ${data.identity.phoneNumber}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.2);
+
+            // line separator
+            doc.fontSize(9).text(`-------------------------------------------------------------------------------------------`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.5);
+
+            // Description
+            doc.fontSize(10).font('font/Poppins-Regular.ttf').text(`${data.identity.description}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.8);
+
+            // Education
+            doc.fontSize(13).font('font/Poppins-Medium.ttf').text(`Education`,
+                // 40, 100,
+                {
+                    underline: true,
+                    align: 'justify'
+                },
+            ).moveDown(0.3);
+
+            // Education Title
+            doc.fontSize(11).font('font/Poppins-Regular.ttf').text(`${data.education.title}`,
+                // 40, 100,
+                {
+                    underline: true,
+                    align: 'justify',
+                    continued: true
+                },
+            ).fontSize(7).font('font/Poppins-Regular.ttf').text(`   (${data.education.dateFrom} - ${data.education.dateFrom})`, {
+                link: 'http://www.example.com',
+                underline: false,
+            }).moveDown(0.6);
+
+            // Education Description
+            doc.fontSize(10).font('font/Poppins-Regular.ttf').text(`${data.education.desc}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.3);
+
+            // Education Accomplishment
+            const splitEduAccomplishment = data.education.accomplishment.split('\n')
+
+            splitEduAccomplishment.forEach(element => {
+                doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
+                    // 40, 100,
+                    {
+                        align: 'justify'
+                    },
+                ).moveDown(0.8);
+            })
+
+            // Professional Experiences
+            doc.fontSize(13).font('font/Poppins-Medium.ttf').text(`Professional Experiences`,
+                // 40, 100,
+                {
+                    underline: true,
+                    align: 'justify'
+                },
+            ).moveDown(0.3);
+
+            // Professional Experiences Title
+            doc.fontSize(11).font('font/Poppins-Regular.ttf').text(`${data.experience.title}`,
+                // 40, 100,
+                {
+                    underline: true,
+                    align: 'justify',
+                    continued: true
+                },
+            ).fontSize(7).font('font/Poppins-Regular.ttf').text(`   (${data.experience.dateFrom} - ${data.experience.dateFrom})`, {
+                link: 'http://www.example.com',
+                underline: false,
+            }).moveDown(0.6);
+
+            // Professional Experiences Description
+            doc.fontSize(10).font('font/Poppins-Regular.ttf').text(`${data.experience.desc}`,
+                // 40, 100,
+                {
+                    align: 'justify'
+                },
+            ).moveDown(0.3);
+
+            // Professional Experiences Accomplishment
+            const splitAccomplishment = data.experience.accomplishment.split('\n')
+
+            splitAccomplishment.forEach(element => {
+                doc.fontSize(9).font('font/Poppins-Regular.ttf').text(`• ${element}`,
+                    // 40, 100,
+                    {
+                        align: 'justify'
+                    },
+                ).moveDown(0.8);
+            })
+
+            // Skills
+            doc.fontSize(11).font('font/Poppins-Medium.ttf').text(`Skills`,
+                // 40, 100,
+                {
+                    underline: true,
+                    align: 'justify'
+                },
+            ).moveDown(0.3);
+
+            // Skills data
+            // if (data.skills) {  }
+            const splitSkill = data.skills.split('+')
+            // console.log(splitSkill)
+            splitSkill.forEach(element => {
+                doc.fontSize(10).font('font/Poppins-Regular.ttf').text(`• ${element}`,
+                    // 40, 100,
+                    {
+                        align: 'justify'
+                    },
+                ).moveDown(0.2);
+            });
+
+
+
+
+            // Finalize the PDF
+            doc.end();
         } catch (error) {
             next(error)
         }
