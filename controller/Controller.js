@@ -155,16 +155,28 @@ class Controller {
 
     static async generatePdf(req, res, next) {
         try {
-            const { resumeId } = req.params
+            const { userId } = req.params
 
-            const Resume = db.collection("Resumes").doc(resumeId)
+            // console.log(userId)
 
-            const docResume = await Resume.get();
+            // const { id: idUser } = req.user
+
+            // console.log(idUser, "idUser")
+
+            const Resume = db.collection("Resumes")
+
+            const foundResume = await Resume.where('userId', '==', userId).get();
+
+            const data = foundResume.docs[0].data()
+
+            // console.log(data)
+
+            // const docResume = await Resume.get();
 
             // console.log(Resume.empty, "==========")
             // const foundResume = await Resume.where('resumeId', '==', idUser).get();
-            // console.log(docResume.data())
-            const data = docResume.data()
+            // console.log(Resume.docs[0].data())
+            // const data = docResume.data()
 
             const doc = new PDFDocument({ size: 'A4' });
 

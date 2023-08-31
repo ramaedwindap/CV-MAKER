@@ -17,7 +17,7 @@ router.post('/register', Controller.register)
 
 router.post('/login', Controller.login)
 
-router.get('/generate-pdf/:resumeId', Controller.generatePdf)
+router.get('/generate-pdf/:userId', Controller.generatePdf)
 
 router.get('/resumes', authentication, Controller.getResume)
 
