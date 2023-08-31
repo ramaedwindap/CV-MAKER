@@ -2,15 +2,13 @@
 
 # Login
 
-Used to collect a Token for a registered User.
-
 **URL** : `/login`
 
 **Method** : `POST`
 
 **Auth required** : NO
 
-**Data constraints**
+**req.body**
 
 ```json
 {
@@ -34,14 +32,54 @@ Used to collect a Token for a registered User.
 
 ## Error Response
 
-**Condition** : If 'username' and 'password' combination is wrong.
-
-**Code** : `400 BAD REQUEST`
+**Code** : `400 | 401`
 
 **Content** :
 
 ```json
 {
-  "non_field_errors": ["Unable to login with provided credentials."]
+  "message": "string"
+}
+```
+
+# Regist
+
+**URL** : `/resgister`
+
+**Method** : `POST`
+
+**Auth required** : NO
+
+**req.body**
+
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+## Success Response
+
+**Code** : `201 OK`
+
+**Content example**
+
+```json
+{
+  "id": "CQmnTy7u1qfOb5kT6wxQ",
+  "email": "rasdsdma@gmail.com"
+}
+```
+
+## Error Response
+
+**Code** : `400 | 401`
+
+**Content** :
+
+```json
+{
+  "message": "string"
 }
 ```
