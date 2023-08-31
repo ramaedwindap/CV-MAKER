@@ -145,3 +145,72 @@
   "message": "string"
 }
 ```
+
+# Resume
+
+**URL** : `/resumes`
+
+**Method** : `POST`
+
+**Auth required** : Yes
+
+**req.headers**
+
+```json
+{
+  "access_token": "string"
+}
+```
+
+**req.body**
+
+```json
+{
+  "skills": "Web dev",
+  "education": {
+    "dateTo": "Oct 2022",
+    "title": "Siliwangi University",
+    "dateFrom": "Sep 2022",
+    "desc": "Intelligent Systems and Informatics (S.Kom.), GPA: 3.53 ",
+    "accomplishment": "Responsible for informing the results of activities organized by Informatics Student Association and publishing the achievements of students and communities in informatics.\nResponsible for informing the results of activities organized by Informatics Student Association and publishing the achievements of students and communities in informatics."
+  },
+  "identity": {
+    "phoneNumber": "087722275005",
+    "address": "Jl. Juana No. 21, Central Jakarta, Indonesia, 10310",
+    "name": "Rama Edwinda",
+    "description": "I am a hardworking individual who is quick to learn and willing to adapt to any challenging situation and passionate about learning new technologies, particularly in the areas of UI/UX, cloud computing, and machine learning.",
+    "email": "ramaedwindap@gmail.com"
+  },
+  "experience": {
+    "dateTo": "Oct 2022",
+    "title": "Data Science IT Bootcamp Instructor",
+    "dateFrom": "Sep 2022",
+    "desc": "Bringing data science training with the CRoss Industry Standard Process for Data Mining (CRISP-DM) approach to Informatics students at Siliwangi University ",
+    "accomplishment": "Provided materials on business understanding, including defining business, technical, and data science project objectives\nProvided materials on business understanding, including defining business, technical, and data science project objectives"
+  }
+}
+```
+
+## Success Response
+
+**Code** : `201 OK`
+
+**Content example**
+
+```json
+{
+  "message": "Success update resume id ERQU4TJfOKx2BR7cDi7W"
+}
+```
+
+## Error Response
+
+**Code** : `500`
+
+**Content** :
+
+```json
+{
+  "message": "string"
+}
+```
