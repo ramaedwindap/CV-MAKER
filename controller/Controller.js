@@ -4,6 +4,7 @@ const { isValidEmail, validMinLength } = require('../helper/helpers');
 const { signToken } = require('../helper/jwt');
 const PDFDocument = require('pdfkit');
 const OpenAI = require('openai');
+db.settings({ ignoreUndefinedProperties: true })
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_KEY, // defaults to process.env["OPENAI_API_KEY"]
