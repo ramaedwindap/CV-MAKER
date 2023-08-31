@@ -349,9 +349,19 @@ class Controller {
         try {
             const { query } = req.body
 
-            // console.log(query, "==============")
+            console.log(req.body, "==============")
+            const newQuery = `
+            I create a website to generate a CV, 
+            and I want you to alter this sentences more efficient and more attract to HR with less than 100 words only,
+
+            here is the sentence:
+            \`\`\`
+                ${query}
+            \`\`\`
+            `
+            console.log(newQuery)
             const completion = await openai.chat.completions.create({
-                messages: [{ role: 'user', content: query }],
+                messages: [{ role: 'user', content: newQuery }],
                 model: 'gpt-3.5-turbo',
             });
 
