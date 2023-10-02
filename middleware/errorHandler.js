@@ -19,7 +19,9 @@ function errorHandler(err, req, res, next) {
         case "invalidToken":
         case "JsonWebTokenError":
             return res.status(401).json({ message: 'Invalid token' });
-
+        case "NotFound":
+        case "queryRequired":
+            return res.status(404).json({ message: 'Not found!' });
 
 
         default:

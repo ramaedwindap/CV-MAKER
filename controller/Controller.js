@@ -350,19 +350,13 @@ class Controller {
         try {
             const { query } = req.body
 
-            console.log(req.body, "==============")
-            const newQuery = `
-            I create a website to generate a CV, 
-            and I want you to alter this sentences more efficient and more attract to HR with less than 100 words only,
+            // console.log(req.body, "==============")
+            if (!query.trim()) throw { name: "queryRequired" }
 
-            here is the sentence:
-            \`\`\`
-                ${query}
-            \`\`\`
-            `
-            console.log(newQuery)
+
+            // console.log(newQuery)
             const completion = await openai.chat.completions.create({
-                messages: [{ role: 'user', content: newQuery }],
+                messages: [{ role: 'user', content: query }],
                 model: 'gpt-3.5-turbo',
             });
 
@@ -382,6 +376,9 @@ class Controller {
             const Resume = db.collection("Resumes")
 
             const foundResume = await Resume.where('userId', '==', idUser).get();
+
+            // console.log(foundResume.empty)
+            if (foundResume.empty) throw { name: "NotFound" }
 
             const data = foundResume.docs[0].data()
 
